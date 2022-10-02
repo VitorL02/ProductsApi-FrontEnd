@@ -6,6 +6,9 @@ export default{
 
     listProduct:() =>{
         return http.get('produtos');
+    },
+    saveProduct:(produto)=>{
+        return http.post('produto',produto)
     }
 
 }
