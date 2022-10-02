@@ -1,31 +1,87 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+
+    <nav>
+      <div class="nav-wrapper blue darken-1">
+        <a href="#" class="brand-logo center">Produtos</a>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <form>
+
+        <label>Nome</label>
+        <input type="text" placeholder="Nome">
+        <label>Quantidade</label>
+        <input type="number" placeholder="QTD">
+        <label>Valor</label>
+        <input type="text" placeholder="Valor">
+
+        <button class="waves-effect waves-light btn-small">Salvar<i class="material-icons left">save</i></button>
+
+      </form>
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>NOME</th>
+            <th>QTD</th>
+            <th>VALOR</th>
+            <th>OPÇÕES</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr v-for="produto of products" :key="produto.id">
+
+            <td>{{produto.nome}}</td>
+            <td>{{produto.quantidade}}</td>
+            <td>{{produto.valor}}</td>
+            <td>
+              <button class="waves-effect btn-small blue darken-1"><i class="material-icons">create</i></button>
+              <button class="waves-effect btn-small red darken-1"><i class="material-icons">delete_sweep</i></button>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+
+<script >
+import Produto from './service/products';
+export default {
+
+  data() {
+    return {
+      products: [],
+    }
+  },
+  mounted() {
+    Produto.listProduct().then(response => {
+
+      this.products = response.data;
+
+    });
+  }
+
+
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+</script>
+
+<style >
+
 </style>
