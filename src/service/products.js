@@ -9,6 +9,9 @@ export default{
     },
     saveProduct:(produto)=>{
         return http.post('produto',produto);
+    },
+    editProduct: (produto)=>{
+        return http.post('produto',produto);
     }
 
 }

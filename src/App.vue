@@ -45,7 +45,8 @@
             <td>{{produto.quantidade}}</td>
             <td>{{produto.valor}}</td>
             <td>
-              <button class="waves-effect btn-small blue darken-1"><i class="material-icons">create</i></button>
+              <button @click="edit(produto)" class="waves-effect btn-small blue darken-1 edit-button"><i
+                  class="material-icons">create</i></button>
               <button class="waves-effect btn-small red darken-1"><i class="material-icons">delete_sweep</i></button>
             </td>
 
@@ -75,6 +76,7 @@ export default {
   data() {
     return {
       produto: {
+        id: '',
         nome: '',
         quantidade: '',
         valor: '',
@@ -93,13 +95,38 @@ export default {
       });
     },
     save() {
-      Produto.saveProduct(this.produto).then(response => {
-        this.produto = {};//Limpa os campos
-        this.toast.success("Produto salvo com sucesso");
-        this.listProducts();
-      }).catch(e => {
-        this.toast.error("Ops Campos vazios, preencha todos os dados por favor");
-      })
+      if (!this.produto.id) {
+        Produto.saveProduct(this.produto).then(response => {
+          this.produto = {};//Limpa os campos
+          this.toast.success("Produto salvo com sucesso");
+          this.listProducts();
+        }).catch(e => {
+          if (e.code === "ERR_NETWORK") {
+            this.toast.error("Ops Erro de conexão com o banco de dados, talvez o heroku free tenha acabado :(");
+            return;
+          }
+          this.toast.error("Ops Campos vazios, preencha todos os dados por favor");
+        });
+
+      } else {
+        Produto.editProduct(this.produto).then(response => {
+          this.produto = {};//Limpa os campos
+          this.toast.success("Produto Atualizado com sucesso");
+          this.listProducts();
+        }).catch(e => {
+          if (e.code === "ERR_NETWORK") {
+            this.toast.error("Ops Erro de conexão com o banco de dados, talvez o heroku free tenha acabado :(");
+            return;
+          }
+          this.toast.error("Ops Campos vazios, preencha todos os dados por favor, para atualizar um produto");
+        });
+      }
+
+    },
+
+    edit(produto) {
+      this.produto = produto;
+
     }
 
   }
@@ -109,5 +136,8 @@ export default {
 </script>
 
 <style >
+.edit-button {
+  margin: 5px;
 
+}
 </style>
