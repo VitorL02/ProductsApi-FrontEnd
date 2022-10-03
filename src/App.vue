@@ -97,6 +97,8 @@ export default {
         this.produto = {};//Limpa os campos
         this.toast.success("Produto salvo com sucesso");
         this.listProducts();
+      }).catch(e => {
+        this.toast.error("Ops Campos vazios, preencha todos os dados por favor");
       })
     }
 

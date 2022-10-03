@@ -8,7 +8,7 @@ export default{
         return http.get('produtos');
     },
     saveProduct:(produto)=>{
-        return http.post('produto',produto)
+        return http.post('produto',produto);
     }
 
 }
