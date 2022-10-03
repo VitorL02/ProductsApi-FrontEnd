@@ -11,7 +11,10 @@ export default{
         return http.post('produto',produto);
     },
     editProduct: (produto)=>{
-        return http.post('produto',produto);
+        return http.put('produto',produto);
+    },
+    deleteProduct:(id)=>{
+        return http.delete(`produto/${id}`,id);
     }
 
 }

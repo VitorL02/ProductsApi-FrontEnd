@@ -18,7 +18,7 @@
         <label>Quantidade</label>
         <input type="number" placeholder="QTD" v-model="produto.quantidade">
         <label>Valor</label>
-        <input type="text" placeholder="Valor" v-model="produto.valor">
+        <input type="number" step="0.01" placeholder="Valor" v-model="produto.valor">
 
         <button class="waves-effect waves-light btn-small">Salvar<i class="material-icons left">save</i></button>
 
@@ -47,7 +47,8 @@
             <td>
               <button @click="edit(produto)" class="waves-effect btn-small blue darken-1 edit-button"><i
                   class="material-icons">create</i></button>
-              <button class="waves-effect btn-small red darken-1"><i class="material-icons">delete_sweep</i></button>
+              <button @click="remove(produto)" class="waves-effect btn-small red darken-1"><i
+                  class="material-icons">delete_sweep</i></button>
             </td>
 
           </tr>
@@ -126,8 +127,20 @@ export default {
 
     edit(produto) {
       this.produto = produto;
+    },
 
+    remove(produto) {
+      if (confirm('Você deseja realmente deletar esse produto?')) {
+        Produto.deleteProduct(produto.id).then(response => {
+          this.toast.success("Produto Deletado com sucesso");
+          this.listProducts();
+        }).catch(e => {
+          this.toast.error("Ops Erro de conexão com o banco de dados, talvez o heroku free tenha acabado :(");
+        });
+      }
     }
+
+
 
   }
 
